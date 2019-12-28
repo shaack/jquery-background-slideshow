@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jquery-background-slideshow</title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+        .hero {
+            font-size: 200%;
+        }
+    </style>
+</head>
+<body>
+<div class="hero">
+    <p>
+        This is the jquery-background-slideshow plugin.
+    </p>
+    <p>
+        It
+    </p>
+    <ul>
+        <li>is mobile friendly, loads images only before shown</li>
+        <li>uses a fade transition for the images</li>
+        <li>works on all modern browsers and the internet explorer >= 11</li>
+    </ul>
+    <p>Usage:</p>
+    <pre>
+$.background-slideshow({
+    delay: 3, // delay between images in seconds, defaults to 5
+    onBeforeTransition: callbackBeforeShowingAnImage, // optional
+    onAfterTransition: callbackAfterShowingAnImage, // optional
+    images: ["image1.jpg", "image2.jpg", "image3.jpg"]
+})
+</pre>
+</div>
+<script src="./node_modules/jquery/dist/jquery.min.js"></script>
+<script src="./src/jquery-background-slideshow.js"></script>
+<script>
+    $(document).ready(() => {
+        $.backgroundSlideshow();
+    })
+</script>
+</body>
+</html>
