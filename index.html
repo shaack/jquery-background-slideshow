@@ -16,11 +16,12 @@
             color: #009999;
         }
         .layer {
-            background-color: rgba(255,255,255,0.7);
+            background-color: rgba(255,255,255,0.8);
             padding: 40px;
             overflow: scroll;
             box-shadow: 0 0 20px 10px rgba(0,0,0,0.5);
             margin-bottom: 40px;
+            transform-style: flat;
         }
     </style>
 </head>
@@ -57,6 +58,17 @@ $("body").backgroundSlideshow({
 <script src="./src/jquery-background-slideshow.js"></script>
 <script>
     $(document).ready(function () {
+
+/*
+        $(".layer").backgroundSlideshow({
+            delay: 3000,
+            transitionDuration: 3000,
+            images: [
+                "assets/images/image3.jpeg",
+                "assets/images/image4.jpeg"
+            ]
+        })
+*/
         $("body").backgroundSlideshow({
             onBeforeTransition: function (index) {
                 console.log("before transition", index)
@@ -73,14 +85,7 @@ $("body").backgroundSlideshow({
             ]
         })
 
-        $(".layer").backgroundSlideshow({
-            delay: 3000,
-            transitionDuration: 3000,
-            images: [
-                "assets/images/image3.jpeg",
-                "assets/images/image4.jpeg"
-            ]
-        })
+
 
 
     })
