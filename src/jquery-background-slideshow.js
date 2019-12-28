@@ -1,6 +1,6 @@
 /**
  * Author and copyright: Stefan Haack (https://shaack.com)
- * Repository: https://github.com/shaack/bootstrap-input-spinner
+ * Repository: https://github.com/shaack/jquery-background-slideshow/
  * License: MIT, see file 'LICENSE'
  */
 
