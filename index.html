@@ -6,17 +6,24 @@
     <style>
         body {
             font-family: sans-serif;
+            font-size: 120%;
+            padding: 40px 40px;
         }
-        .hero {
-            font-size: 200%;
+        h1 {
+            margin-top: 0;
+        }
+        .layer {
+            background-color: rgba(255,255,255,0.9);
+            padding: 40px;
+            overflow: scroll;
         }
     </style>
 </head>
 <body>
-<div class="hero">
-    <p>
-        This is the jquery-background-slideshow plugin.
-    </p>
+<div class="layer">
+    <h1>
+        This is the jquery-background-slideshow plugin
+    </h1>
     <p>
         It
     </p>
@@ -27,8 +34,9 @@
     </ul>
     <p>Usage:</p>
     <pre>
-$.background-slideshow({
-    delay: 3, // delay between images in seconds, defaults to 5
+$.backgroundSlideshow({
+    delay: 10000, // delay between images in seconds, defaults to 5000
+    transitionDuration: 3000,
     onBeforeTransition: callbackBeforeShowingAnImage, // optional
     onAfterTransition: callbackAfterShowingAnImage, // optional
     images: ["image1.jpg", "image2.jpg", "image3.jpg"]
@@ -38,8 +46,21 @@ $.background-slideshow({
 <script src="./node_modules/jquery/dist/jquery.min.js"></script>
 <script src="./src/jquery-background-slideshow.js"></script>
 <script>
-    $(document).ready(() => {
-        $.backgroundSlideshow();
+    $(document).ready(function () {
+        $.backgroundSlideshow({
+            onBeforeTransition: function (index) {
+                console.log("before transition", index)
+            },
+            onAfterTransition: function (index) {
+                console.log("after transition", index)
+            },
+            images: [
+                "assets/images/image1.jpeg",
+                "assets/images/image2.jpeg",
+                "assets/images/image3.jpeg",
+                "assets/images/image4.jpeg"
+            ]
+        })
     })
 </script>
 </body>
