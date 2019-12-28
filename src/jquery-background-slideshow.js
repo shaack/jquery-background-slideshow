@@ -6,9 +6,11 @@
 
 ;(function ($) {
     "use strict"
-    $.extend({
-        backgroundSlideshow: function (options) {
-            var $body = $("body")
+    $.fn.backgroundSlideshow = function (options) {
+
+        this.each(function () {
+
+            var $container = $(this)
             var $currentLayer = null
             var $nextLayer = null
             var currentImageIndex = 0
@@ -19,21 +21,22 @@
                 transitionDuration: 3000,
                 onBeforeTransition: null,
                 onAfterTransition: null,
-                layerStyles: {
-                    backgroundSize: "cover",
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "center center",
-                    position: "fixed",
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    top: 0,
-                    zIndex: -1
-                },
+                fixed: false,
                 images: []
             }
             for (var option in options) {
                 config[option] = options[option]
+            }
+            var layerStyles = {
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "center center",
+                position: config.fixed ? "fixed" : "absolute",
+                left: 0,
+                right: 0,
+                bottom: 0,
+                top: 0,
+                zIndex: -1
             }
 
             function preLoadImage(index) {
@@ -45,14 +48,14 @@
 
             function addLayer(imageSrc) {
                 var $newLayer = $("<div class='backgroundSlideshowLayer'/>")
-                var layerStyles = config.layerStyles
-                layerStyles.backgroundImage = "url(" + imageSrc + ")"
-                $newLayer.css(layerStyles)
-                var $lastLayer = $body.find(".backgroundSlideshowLayer").last()
+                var thisLayerStyles = layerStyles
+                thisLayerStyles.backgroundImage = "url(" + imageSrc + ")"
+                $newLayer.css(thisLayerStyles)
+                var $lastLayer = $container.find("> .backgroundSlideshowLayer").last()
                 if ($lastLayer[0]) {
                     $lastLayer.after($newLayer)
                 } else {
-                    $body.prepend($newLayer)
+                    $container.prepend($newLayer)
                 }
                 $newLayer.hide()
                 return $newLayer
@@ -95,12 +98,13 @@
             }
 
             function cleanUp() {
-                var $layers = $body.find(".backgroundSlideshowLayer")
+                var $layers = $container.find("> .backgroundSlideshowLayer")
                 if ($layers.length > 2) {
                     $layers.first().remove()
                 }
             }
 
+            $container.css("position", "relative")
             nextImage(false)
             setTimeout(function () {
                 nextImage(true)
@@ -109,6 +113,6 @@
                 }, config.delay + config.transitionDuration)
             }, config.delay)
 
-        }
-    })
+        })
+    }
 }(jQuery))

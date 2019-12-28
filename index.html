@@ -16,9 +16,11 @@
             color: #009999;
         }
         .layer {
-            background-color: rgba(255,255,255,0.9);
+            background-color: rgba(255,255,255,0.7);
             padding: 40px;
             overflow: scroll;
+            box-shadow: 0 0 20px 10px rgba(0,0,0,0.5);
+            margin-bottom: 40px;
         }
     </style>
 </head>
@@ -35,11 +37,13 @@
         <li>uses a fade transition for the images,</li>
         <li>works on all modern browsers and the internet explorer 11.</li>
     </ul>
+    <p>Creates a slideshow in a div or fixed fullscreen as body background.</p>
     <p>Usage:</p>
     <pre>
-$.backgroundSlideshow({
+$("body").backgroundSlideshow({
     delay: 10000, // delay between images in seconds, defaults to 5000
     transitionDuration: 3000,
+    fixed: true, // display the background fullscreen and fixed
     onBeforeTransition: callbackBeforeShowingAnImage, // optional
     onAfterTransition: callbackAfterShowingAnImage, // optional
     images: ["image1.jpg", "image2.jpg", "image3.jpg"]
@@ -53,13 +57,14 @@ $.backgroundSlideshow({
 <script src="./src/jquery-background-slideshow.js"></script>
 <script>
     $(document).ready(function () {
-        $.backgroundSlideshow({
+        $("body").backgroundSlideshow({
             onBeforeTransition: function (index) {
                 console.log("before transition", index)
             },
             onAfterTransition: function (index) {
                 console.log("after transition", index)
             },
+            fixed: true,
             images: [
                 "assets/images/image1.jpeg",
                 "assets/images/image2.jpeg",
@@ -67,6 +72,17 @@ $.backgroundSlideshow({
                 "assets/images/image4.jpeg"
             ]
         })
+
+        $(".layer").backgroundSlideshow({
+            delay: 3000,
+            transitionDuration: 3000,
+            images: [
+                "assets/images/image3.jpeg",
+                "assets/images/image4.jpeg"
+            ]
+        })
+
+
     })
 </script>
 </body>
