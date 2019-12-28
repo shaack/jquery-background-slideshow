@@ -13,6 +13,7 @@
             var $nextLayer = null
             var currentImageIndex = 0
             var nextImageIndex = 0
+            var preloadedImages = []
             var config = {
                 delay: 5000,
                 transitionDuration: 3000,
@@ -35,6 +36,13 @@
                 config[option] = options[option]
             }
 
+            function preLoadImage(index) {
+                if (!preloadedImages[index]) {
+                    preloadedImages[index] = new Image()
+                    preloadedImages[index].src = config.images[index]
+                }
+            }
+
             function addLayer(imageSrc) {
                 var $newLayer = $("<div class='backgroundSlideshowLayer'/>")
                 var layerStyles = config.layerStyles
@@ -53,14 +61,13 @@
             function nextImage(transition) {
                 currentImageIndex = nextImageIndex
                 nextImageIndex++
-                if($nextLayer) {
+                if (nextImageIndex >= config.images.length) {
+                    nextImageIndex = 0
+                }
+                if ($nextLayer) {
                     $currentLayer = $nextLayer
                 } else {
                     $currentLayer = addLayer(config.images[currentImageIndex])
-                }
-                $nextLayer = addLayer(config.images[nextImageIndex])
-                if(nextImageIndex >= config.images.length) {
-                    nextImageIndex = 0
                 }
                 if (config.onBeforeTransition) {
                     config.onBeforeTransition(currentImageIndex)
@@ -70,25 +77,32 @@
                         if (config.onAfterTransition) {
                             config.onAfterTransition(currentImageIndex)
                         }
+                        preLoadImage(nextImageIndex)
+                        $nextLayer = addLayer(config.images[nextImageIndex])
+                        cleanUp()
                     })
                 } else {
                     $currentLayer.show()
                     if (config.onAfterTransition) {
                         config.onAfterTransition(currentImageIndex)
+                        setTimeout(function () {
+                            preLoadImage(nextImageIndex)
+                            $nextLayer = addLayer(config.images[nextImageIndex])
+                            cleanUp()
+                        }, config.delay / 2)
                     }
                 }
-                cleanUp()
             }
 
             function cleanUp() {
                 var $layers = $body.find(".backgroundSlideshowLayer")
-                if($layers.length > 3) {
+                if ($layers.length > 2) {
                     $layers.first().remove()
                 }
             }
 
             nextImage(false)
-            setTimeout(function() {
+            setTimeout(function () {
                 nextImage(true)
                 setInterval(function () {
                     nextImage(true)
