@@ -8,8 +8,9 @@
     "use strict"
     $.extend({
         backgroundSlideshow: function (options) {
-            var preLoadedImages = []
             var $body = $("body")
+            var $currentLayer = null
+            var $nextLayer = null
             var currentImageIndex = 0
             var nextImageIndex = 0
             var config = {
@@ -34,13 +35,6 @@
                 config[option] = options[option]
             }
 
-            function preLoadImage(index) {
-                if (!preLoadedImages[index]) {
-                    preLoadedImages[index] = new Image()
-                    preLoadedImages[index].src = config.images[index]
-                }
-            }
-
             function addLayer(imageSrc) {
                 var $newLayer = $("<div class='backgroundSlideshowLayer'/>")
                 var layerStyles = config.layerStyles
@@ -59,7 +53,12 @@
             function nextImage(transition) {
                 currentImageIndex = nextImageIndex
                 nextImageIndex++
-                var $nextLayer = addLayer(config.images[currentImageIndex])
+                if($nextLayer) {
+                    $currentLayer = $nextLayer
+                } else {
+                    $currentLayer = addLayer(config.images[currentImageIndex])
+                }
+                $nextLayer = addLayer(config.images[nextImageIndex])
                 if(nextImageIndex >= config.images.length) {
                     nextImageIndex = 0
                 }
@@ -67,19 +66,15 @@
                     config.onBeforeTransition(currentImageIndex)
                 }
                 if (transition) {
-                    $nextLayer.fadeIn(config.transitionDuration, function () {
+                    $currentLayer.fadeIn(config.transitionDuration, function () {
                         if (config.onAfterTransition) {
                             config.onAfterTransition(currentImageIndex)
-                            preLoadImage(nextImageIndex)
                         }
                     })
                 } else {
-                    $nextLayer.show()
+                    $currentLayer.show()
                     if (config.onAfterTransition) {
                         config.onAfterTransition(currentImageIndex)
-                        setTimeout(function() {
-                            preLoadImage(nextImageIndex)
-                        }, 1000)
                     }
                 }
                 cleanUp()
@@ -87,7 +82,7 @@
 
             function cleanUp() {
                 var $layers = $body.find(".backgroundSlideshowLayer")
-                if($layers.length > 2) {
+                if($layers.length > 3) {
                     $layers.first().remove()
                 }
             }
