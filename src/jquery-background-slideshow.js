@@ -37,7 +37,9 @@
                 right: 0,
                 bottom: 0,
                 top: 0,
-                zIndex: -1,
+                zIndex: -1
+            }
+            var layerStylesTransition = {
                 transition: transition,
                 "-webkit-transition": transition,
                 "-moz-transition": transition,
@@ -51,22 +53,26 @@
                 }
             }
 
-            function addLayer(imageSrc) {
+            function addLayer(imageSrc, withTransition) {
                 var $newLayer = $("<div class='backgroundSlideshowLayer'/>")
                 var thisLayerStyles = layerStyles
                 thisLayerStyles.backgroundImage = "url(" + imageSrc + ")"
+                $newLayer.css("opacity", "0")
                 $newLayer.css(thisLayerStyles)
+                if(withTransition) {
+                    $newLayer.css(layerStylesTransition)
+                }
                 var $lastLayer = $container.find("> .backgroundSlideshowLayer").last()
                 if ($lastLayer[0]) {
                     $lastLayer.after($newLayer)
                 } else {
                     $container.prepend($newLayer)
                 }
-                $newLayer.css("opacity", "0")
                 return $newLayer
             }
 
-            function nextImage(transition) {
+            function nextImage(withTransition) {
+                console.log("nextImage", withTransition)
                 currentImageIndex = nextImageIndex
                 nextImageIndex++
                 if (nextImageIndex >= config.images.length) {
@@ -75,32 +81,23 @@
                 if ($nextLayer) {
                     $currentLayer = $nextLayer
                 } else {
-                    $currentLayer = addLayer(config.images[currentImageIndex])
+                    $currentLayer = addLayer(config.images[currentImageIndex], withTransition)
                 }
                 if (config.onBeforeTransition) {
                     config.onBeforeTransition(currentImageIndex)
                 }
-                if (transition) {
-                    $currentLayer.css("opacity", "1")
-                    setTimeout(function() {
-                        if (config.onAfterTransition) {
-                            config.onAfterTransition(currentImageIndex)
-                        }
-                        preLoadImage(nextImageIndex)
-                        $nextLayer = addLayer(config.images[nextImageIndex])
-                        cleanUp()
-                    }, config.transitionDuration)
-                } else {
-                    $currentLayer.css("opacity", "1")
+
+                $currentLayer.css("opacity", "1")
+                setTimeout(function() {
                     if (config.onAfterTransition) {
                         config.onAfterTransition(currentImageIndex)
-                        setTimeout(function () {
-                            preLoadImage(nextImageIndex)
-                            $nextLayer = addLayer(config.images[nextImageIndex])
-                            cleanUp()
-                        }, config.delay / 2)
                     }
-                }
+                    preLoadImage(nextImageIndex)
+                }, withTransition ? config.transitionDuration : 0)
+                setTimeout(function() {
+                    $nextLayer = addLayer(config.images[nextImageIndex], true)
+                    cleanUp()
+                }, config.transitionDuration)
             }
 
             function cleanUp() {
