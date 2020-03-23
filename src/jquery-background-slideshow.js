@@ -72,7 +72,6 @@
             }
 
             function nextImage(withTransition) {
-                console.log("nextImage", withTransition)
                 currentImageIndex = nextImageIndex
                 nextImageIndex++
                 if (nextImageIndex >= config.images.length) {
