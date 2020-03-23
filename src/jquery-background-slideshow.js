@@ -27,6 +27,7 @@
             for (var option in options) {
                 config[option] = options[option]
             }
+            var transition = "opacity " + config.transitionDuration +  "ms ease-in-out"
             var layerStyles = {
                 backgroundSize: "cover",
                 backgroundRepeat: "no-repeat",
@@ -36,7 +37,11 @@
                 right: 0,
                 bottom: 0,
                 top: 0,
-                zIndex: -1
+                zIndex: -1,
+                transition: transition,
+                "-webkit-transition": transition,
+                "-moz-transition": transition,
+                "-o-transition": transition
             }
 
             function preLoadImage(index) {
@@ -57,7 +62,7 @@
                 } else {
                     $container.prepend($newLayer)
                 }
-                $newLayer.hide()
+                $newLayer.css("opacity", "0")
                 return $newLayer
             }
 
@@ -76,6 +81,16 @@
                     config.onBeforeTransition(currentImageIndex)
                 }
                 if (transition) {
+                    $currentLayer.css("opacity", "1")
+                    setTimeout(function() {
+                        if (config.onAfterTransition) {
+                            config.onAfterTransition(currentImageIndex)
+                        }
+                        preLoadImage(nextImageIndex)
+                        $nextLayer = addLayer(config.images[nextImageIndex])
+                        cleanUp()
+                    }, config.transitionDuration)
+                    /*
                     $currentLayer.fadeIn(config.transitionDuration, function () {
                         if (config.onAfterTransition) {
                             config.onAfterTransition(currentImageIndex)
@@ -84,8 +99,9 @@
                         $nextLayer = addLayer(config.images[nextImageIndex])
                         cleanUp()
                     })
+                     */
                 } else {
-                    $currentLayer.show()
+                    $currentLayer.css("opacity", "1")
                     if (config.onAfterTransition) {
                         config.onAfterTransition(currentImageIndex)
                         setTimeout(function () {
