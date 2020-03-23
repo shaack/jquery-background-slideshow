@@ -1,6 +1,6 @@
 {
   "name": "jquery-background-slideshow",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "jQuery plugin to create a mobile friendly background slideshow with fade transition",
   "main": "index.html",
   "scripts": {
