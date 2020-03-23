@@ -90,16 +90,6 @@
                         $nextLayer = addLayer(config.images[nextImageIndex])
                         cleanUp()
                     }, config.transitionDuration)
-                    /*
-                    $currentLayer.fadeIn(config.transitionDuration, function () {
-                        if (config.onAfterTransition) {
-                            config.onAfterTransition(currentImageIndex)
-                        }
-                        preLoadImage(nextImageIndex)
-                        $nextLayer = addLayer(config.images[nextImageIndex])
-                        cleanUp()
-                    })
-                     */
                 } else {
                     $currentLayer.css("opacity", "1")
                     if (config.onAfterTransition) {
