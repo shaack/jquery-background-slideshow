@@ -1,5 +1,7 @@
 # jquery-background-slideshow plugin
 
+* DEPRECATED * Use bootstrap Carousel instead: https://getbootstrap.com/docs/4.0/components/carousel/
+
 It
 
 - is mobile friendly, loads images only before shown,
