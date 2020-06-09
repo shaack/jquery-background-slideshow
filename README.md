@@ -1,6 +1,6 @@
-# jquery-background-slideshow plugin
+DEPRECATED! Use bootstrap Carousel instead: https://getbootstrap.com/docs/4.0/components/carousel/
 
-This is DEPRECATED! Use bootstrap Carousel instead: https://getbootstrap.com/docs/4.0/components/carousel/
+# jquery-background-slideshow plugin
 
 It
 
